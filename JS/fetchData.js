@@ -1,3 +1,5 @@
+import { parseData } from "./displayData.js";
+
 async function fetchAPIData(searchType, search) {
     //Skickar med ett objekt med request info.
     let url;
@@ -31,7 +33,7 @@ async function handelSubmits(event){
     } 
    try{
        const data = fetchAPIData(searchType,search);
-       //Behandla Json datan....
+       parseData(data);
    }catch(error){
         //Testa detta!!
         const errorMessage = document.createElement("h1");
