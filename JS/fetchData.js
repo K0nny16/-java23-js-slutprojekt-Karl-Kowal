@@ -12,13 +12,21 @@ async function fetchAPIData(searchType, search) {
     };
     
     //Anpassar URLn beroende på vad användaren har sökt efter.
-    if(searchType == "search")url = "https://api.themoviedb.org/3/search/multi?query="+search+"&include_adult=false&language=en-US&page=1";
+    //Problement är URL stringen aldrig ändras när jag använder mig av formet troligt vis är det något fel på hur jag hanterar radio knapparna och texten i formet kolla på detta! 
+    if(searchType == "people")url = "https://api.themoviedb.org/3/search/person?query="+search+"&include_adult=false&language=en-US&page=1";
+    else if(searchType == "movieSearch") url = "https://api.themoviedb.org/3/search/movie?query="+search+"&include_adult=false&language=en-US&page=1";
     else if(searchType == "top10")url ="https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1";
     else if(searchType == "popular")url = "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1";
-
-    const respone = await fetch(url,options);
-    const data = await respone.json();
-    return data;
+    try{
+        const respone = await fetch(url,options);
+        if(!respone.ok) throw new Error(`Error ${respone.status}`)
+        const data = await respone.json();
+        return data.results;
+    }
+    catch(error){
+        const errorElement = document.createElement("h2");
+        errorElement.innerText=`Error! \n ${error}`
+    }
 }
 
 //Metod som behandlar eventet beroende på ifall det är någon av knapparna som trycks eller ifall det är formet som gör en submit.
@@ -26,20 +34,18 @@ async function handelSubmits(event){
     event.preventDefault();
     let searchType;
     let search;
+
     if(event.type == "click") searchType = event.currentTarget.id;
+
     else if(event.type == "submit"){
-        search = event.currentTarget.querySelector("#textInput").value;
-        searchType = "search";
+        const selectElement = document.querySelector("select");
+        const selectedValue = selectElement.value;
+        if(selectedValue == "people") searchType = "people";
+        else if(selectedValue == "movies") searchType = "movieSearch";
+        search = document.querySelector("#textInput").value;
     } 
-   try{
-       const data = fetchAPIData(searchType,search);
-       parseData(data);
-   }catch(error){
-        //Testa detta!!
-        const errorMessage = document.createElement("h1");
-        errorMessage.innerText=`Ett fel inträffade! ${error}`;
-        document.body.querySelector("#content").append(errorMessage);
-   }
+    const data = await fetchAPIData(searchType,search);
+    parseData(data,searchType);
 }
 
 export{handelSubmits};
