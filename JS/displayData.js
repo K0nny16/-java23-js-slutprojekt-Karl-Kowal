@@ -13,7 +13,6 @@ function parseData(data,type){
             poster_path: search.poster_path,
             title: search.title,
             release_date: search.release_date
-
         }));
     }else if(type == "top10" ||type == "popular"){
         parsedObjects = data.map(movie =>({
