@@ -21,6 +21,7 @@ async function fetchAPIData(searchType, search) {
         const respone = await fetch(url,options);
         if(!respone.ok) throw new Error(`Error ${respone.status}`)
         const data = await respone.json();
+        console.log(data);
         return data.results;
     }
     catch(error){
@@ -40,8 +41,8 @@ async function handelSubmits(event){
     else if(event.type == "submit"){
         const selectElement = document.querySelector("select");
         const selectedValue = selectElement.value;
-        if(selectedValue == "people") searchType = "people";
-        else if(selectedValue == "movies") searchType = "movieSearch";
+        if(selectedValue == "People") searchType = "people";
+        else if(selectedValue == "Movies") searchType = "movieSearch";
         search = document.querySelector("#textInput").value;
     } 
     const data = await fetchAPIData(searchType,search);

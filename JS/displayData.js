@@ -1,5 +1,6 @@
 function parseData(data,type){
     let parsedObjects;
+    //Search parsar inte rätt!
     if(type == "person"){
         parsedObjects = data.map(person => ({
             profile_picure:person.profile_path,
