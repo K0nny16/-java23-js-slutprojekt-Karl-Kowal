@@ -12,7 +12,6 @@ async function fetchAPIData(searchType, search) {
     };
     
     //Anpassar URLn beroende på vad användaren har sökt efter.
-    //Problement är URL stringen aldrig ändras när jag använder mig av formet troligt vis är det något fel på hur jag hanterar radio knapparna och texten i formet kolla på detta! 
     if(searchType == "people")url = "https://api.themoviedb.org/3/search/person?query="+search+"&include_adult=false&language=en-US&page=1";
     else if(searchType == "movieSearch") url = "https://api.themoviedb.org/3/search/movie?query="+search+"&include_adult=false&language=en-US&page=1";
     else if(searchType == "top10")url ="https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1";
@@ -25,8 +24,10 @@ async function fetchAPIData(searchType, search) {
         return data.results;
     }
     catch(error){
+        const selectElement = document.querySelector("select");
         const errorElement = document.createElement("h2");
         errorElement.innerText=`Error! \n ${error}`
+        selectElement.append(errorElement);
     }
 }
 
