@@ -32,6 +32,11 @@ function parseData(data,searchType){
 
 function showData(parsedData,searchType){
     const contentContainer = document.querySelector("#content");
+    if(parsedData.length == 0){
+        const noResults = document.createElement("h2");
+        noResults.innerText="No results!";
+        contentContainer.append(noResults);
+    }
     for(const object of parsedData){
         const div = document.createElement("div");
         

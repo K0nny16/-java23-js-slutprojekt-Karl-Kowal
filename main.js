@@ -12,7 +12,6 @@ form.addEventListener('submit',handelSubmits);
 
 /*TODO
     Kontrollera felhantering så det uppfyller kraven.
-    (Punkten öven fixa tillexempe ifall sökningen inte ger något resultat!)
     (Fetch error är hanterade med try/catch kanske inte räcker ? kolla på måndag)
 
     Optimera kod.
