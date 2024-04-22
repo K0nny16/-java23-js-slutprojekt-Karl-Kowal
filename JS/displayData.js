@@ -1,85 +1,56 @@
-function parseData(data,searchType){
-    //Gör om datan till mer lätt hanterliga object och arrayer.
-    let parsedObjects;
-    if(searchType == "People"){
-        parsedObjects = data.map(person => ({
-        profile_picture: person.profile_path,
-        name: person.name,
-        know_for_department: person.known_for_department,
-        known_for: person.known_for.map(title => {
-            if (title.media_type == "movie") return title.original_title;
-            else if (title.media_type == "tv") return title.original_name;
-        }),
-        mediaType: person.known_for.map(mediaType => mediaType.media_type)
-    }));
-    }else if(searchType == "Movies"){
-        parsedObjects = data.map(search =>({
-            poster_path: search.poster_path,
-            title: search.original_title,
-            release_date: search.release_date,
-            overview:search.overview
-        }));
-    }else if(searchType == "top10" ||searchType == "popular"){
-        parsedObjects = data.map(movie =>({
-            poster_path: movie.poster_path,
-            title: movie.title,
-            release_date: movie.release_date
-        }));
-    }
-    console.log(parsedObjects);
-    showData(parsedObjects,searchType);
-}
 //Bygger dom olika elementen men först kollar så det inte är ett tomt resultat.
 //Om tomt skickar vi ett felmedelande.
-function showData(parsedData,searchType){
+function showData(data,searchType){
     const contentContainer = document.querySelector("#content");
-    if(parsedData.length == 0){
-        const noResults = document.createElement("h2");
-        noResults.innerText="No results!";
-        contentContainer.append(noResults);
-    }
-    for(const object of parsedData){
-        const div = document.createElement("div");
-        div.className="contentDiv";
+    //Itererar igenom arrayen av objekt.
+    for(const object of data){
+        const mediaDiv = document.createElement("div");
+        mediaDiv.className="contentDiv";
 
+        //Sätter sourcen till bilden och eventuellt felmedelande.
         const img = document.createElement("img");
-        img.src = "https://image.tmdb.org/t/p/w500"+(object.profile_picture ? object.profile_picture : object.poster_path);
+        img.src = "https://image.tmdb.org/t/p/w500"+(object.profile_path ? object.profile_path : object.poster_path);
         img.alt = "Bilden hittades inte!";
-        div.append(img);
+        mediaDiv.append(img);
 
-        const headerText = document.createElement("h2");
-        headerText.innerText = (object.name ? object.name:object.title);
-        div.append(headerText);
+        //Kollar ifall det är en film eller en serie som är i objektet.
+        const headerTextH2 = document.createElement("h2");
+        headerTextH2.innerText = (object.name ? object.name:object.title);
+        mediaDiv.append(headerTextH2);
         
         if(searchType =="People"){
-            const department = document.createElement("p");
-            department.innerText = object.know_for_department;
-            div.append(department);
+            const departmentPtag = document.createElement("p");
+            departmentPtag.innerText = object.known_for_department;            ;
+            mediaDiv.append(departmentPtag);
 
-            const knowFor = document.createElement("ul")
+            //Går igenom arrayen och lägger till dom olika engenskaperna i en lista.
+            const knowForUl = document.createElement("ul")
             for(let i=0; i < object.known_for.length; i++){
                 const titleLi = document.createElement("li");
-                titleLi.innerText=`${object.mediaType[i].charAt(0).toUpperCase() + object.mediaType[i].slice(1)}: ${object.known_for[i]}`;
-                knowFor.append(titleLi);
+                const title = (object.known_for[i].original_title ? object.known_for[i].original_title : object.known_for[i].original_name);
+                titleLi.innerText=`${object.known_for[i].media_type.charAt(0).toUpperCase() + object.known_for[i].media_type.slice(1)}: ${title}`;
+                knowForUl.append(titleLi);
             }
-            div.append(knowFor);
+            mediaDiv.append(knowForUl);
 
         }else if(searchType == "Movies"){
-            const releaseDate = document.createElement("p");
-            releaseDate.innerText="Released: "+(object.release_date ? object.release_date:"no release date in DB!");
-            div.append(releaseDate);
+            //Lägger till värden på dom olika elementen och förbererder eventuellt felmedelande.
+            const releaseDatePtag = document.createElement("p");
+            releaseDatePtag.innerText="Released: "+(object.release_date ? object.release_date:"no release date in DB!");
+            mediaDiv.append(releaseDatePtag);
 
-            const description = document.createElement("p");
-            description.innerText=(object.overview ? object.overview : "No media description in DB!");
-            div.append(description);
-
+            const descriptionPtag = document.createElement("p");
+            descriptionPtag.innerText=(object.overview ? object.overview : "No media description in DB!");
+            mediaDiv.append(descriptionPtag);
+        
+        //Samma concept som ovan.
         }else if(searchType == "top10" || searchType == "popular"){
-            const releaseDate = document.createElement("p");
-            releaseDate.innerText="Released: "+(object.release_date ? object.release_date :"no release date in DB!");
-            div.append(releaseDate);
+            const releaseDatePtag = document.createElement("p");
+            releaseDatePtag.innerText="Released: "+(object.release_date ? object.release_date :"no release date in DB!");
+            mediaDiv.append(releaseDatePtag);
         }
-        contentContainer.append(div);
+        contentContainer.append(mediaDiv);
     }
 }
 
-export{parseData};
+export{showData}

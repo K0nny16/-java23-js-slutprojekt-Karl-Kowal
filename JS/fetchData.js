@@ -1,5 +1,4 @@
-import { parseData } from "./displayData.js";
-
+import { showData } from "./displayData.js";
 
 async function fetchAPIData(searchType, search) {
     //Skickar med ett objekt med request info.
@@ -11,7 +10,6 @@ async function fetchAPIData(searchType, search) {
             Authorization:'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyNzVjODIyNGNhOGEwZWQ5ODkyMzdhN2IwOTVhMGVhNCIsInN1YiI6IjY2MWZkNDM4M2M0MzQ0MDE3YzA0ODA5NyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.bMWvn8XnwK8YYhcnV7cp0PNHxz-IjGR78a8kY_ORP_Y'
         }
     };
-    
     //Anpassar URLn beroende på vad användaren har sökt efter.
     if(searchType == "People")url = "https://api.themoviedb.org/3/search/person?query="+search+"%20&include_adult=false&language=en-US&page=1";
     else if(searchType == "Movies") url = "https://api.themoviedb.org/3/search/movie?query="+search+"&include_adult=false&language=en-US&page=1";
@@ -20,6 +18,13 @@ async function fetchAPIData(searchType, search) {
     try{
         const respone = await fetch(url,options);
         const data = await respone.json();
+        //Kontrollerar så att användarens sökning gav ett resultat.
+        if(data.results == 0){
+            const errorH2 = document.createElement("h2");
+            errorH2.innerText="No results!";
+            contentContainer.append(errorH2);
+            return [];
+        } 
         return data.results;
     }
     catch(error){
@@ -29,9 +34,8 @@ async function fetchAPIData(searchType, search) {
     }
 }
 
-
 const contentContainer = document.querySelector("#content");
-//Funktion som behandlar eventet beroende på ifall det är någon av knapparna som trycks eller ifall det är formet som gör en submit.
+//Funktionen kollar vilken knapp användaren har tryckt på och även vad den har sökt på och spara det i searchType och search.
 async function handelSubmits(event){
     event.preventDefault();
     contentContainer.innerHTML="";
@@ -45,8 +49,8 @@ async function handelSubmits(event){
         searchType = selectElement.value;
         search = document.querySelector("#textInput").value.trim();
     } 
-    const data = await fetchAPIData(searchType,search);
-    parseData(data,searchType);
+    const data = await fetchAPIData(searchType, search);
+    showData(data, searchType);
 }
 
 export{handelSubmits};

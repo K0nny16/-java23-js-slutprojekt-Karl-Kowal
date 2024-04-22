@@ -11,10 +11,8 @@ btnPopular.addEventListener('click',handelSubmits);
 form.addEventListener('submit',handelSubmits);
 
 /*TODO
-    Kontrollera felhantering så det uppfyller kraven.
-    (Fetch error är hanterade med try/catch kanske inte räcker ? Kolla på måndag)
+    Optimera kod. ?? Delvis
 
-    Optimera kod.
     Kolla vad som kan vara en eventuell VG funktion till programmet.
     CSS???
  */
