@@ -11,7 +11,6 @@ function parseData(data,searchType){
         }),
         mediaType: person.known_for.map(mediaType => mediaType.media_type)
     }));
-
     }else if(searchType == "movieSearch"){
         parsedObjects = data.map(search =>({
             poster_path: search.poster_path,
@@ -39,17 +38,19 @@ function showData(parsedData,searchType){
     }
     for(const object of parsedData){
         const div = document.createElement("div");
+        div.className="contentDiv";
+
+        const img = document.createElement("img");
+        const url ="https://image.tmdb.org/t/p/w500"+(object.profile_picture ? object.profile_picture : object.poster_path); 
+        img.src = url;
+        img.alt = "Bilden hittades inte!";
+        div.append(img);
+
+        const headerText = document.createElement("h2");
+        headerText.innerText = (object.name ? object.name:object.title);
+        div.append(headerText);
         
         if(searchType =="people"){
-            const img = document.createElement("img");
-            img.src = `https://image.tmdb.org/t/p/w500${object.profile_picture}`;
-            img.alt = object.name;
-            div.append(img);
-
-            const name = document.createElement("h2");
-            name.innerText = object.name;
-            div.append(name);
-
             const department = document.createElement("p");
             department.innerText = object.know_for_department;
             div.append(department);
@@ -63,15 +64,6 @@ function showData(parsedData,searchType){
             div.append(knowFor);
 
         }else if(searchType == "movieSearch"){
-            const img = document.createElement("img");
-            img.src =`https://image.tmdb.org/t/p/w500${object.poster_path}`;
-            img.alt =  object.titele;
-            div.append(img);
-
-            const title = document.createElement("h2");
-            title.innerText = `Title: ${object.title}`;
-            div.append(title);
-
             const releaseDate = document.createElement("p");
             releaseDate.innerText=`Released: ${object.release_date}`;
             div.append(releaseDate);
@@ -81,15 +73,6 @@ function showData(parsedData,searchType){
             div.append(description);
 
         }else if(searchType == "top10" || searchType == "popular"){
-            const img = document.createElement("img");
-            img.src = `https://image.tmdb.org/t/p/w500${object.poster_path}`;
-            img.alt = object.title;
-            div.append(img);
-
-            const title = document.createElement("h2");
-            title.innerText=`Title: ${object.title}`;
-            div.append(title);
-
             const releaseDate = document.createElement("p");
             releaseDate.innerText=`Released: ${object.release_date}`;
             div.append(releaseDate);
