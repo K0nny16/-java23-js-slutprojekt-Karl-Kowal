@@ -8,10 +8,3 @@ const form = document.querySelector("form");
 btnTop10.addEventListener("click", handelSubmits);
 btnPopular.addEventListener("click", handelSubmits);
 form.addEventListener("submit", handelSubmits);
-
-/*TODO
-    Optimera kod. ?? Delvis
-
-    Kolla vad som kan vara en eventuell VG funktion till programmet.
-    CSS???
- */

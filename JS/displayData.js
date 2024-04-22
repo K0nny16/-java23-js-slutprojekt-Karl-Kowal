@@ -50,6 +50,7 @@ function showData(data,searchType){
             releaseDatePtag.innerText="Released: "+(object.release_date ? object.release_date :"no release date in DB!");
             mediaDiv.append(releaseDatePtag);
         }
+        
         contentContainer.append(mediaDiv);
     }
 }
