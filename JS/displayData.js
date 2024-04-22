@@ -1,5 +1,8 @@
 //Bygger dom olika elementen men först kollar så det inte är ett tomt resultat.
 //Om tomt skickar vi ett felmedelande.
+
+//Funktionen visar en bild en title och annan information på hemsidan som är relevant för median eller personen.
+
 function showData(data,searchType){
     const contentContainer = document.querySelector("#content");
     //Itererar igenom arrayen av objekt.
@@ -23,7 +26,7 @@ function showData(data,searchType){
             departmentPtag.innerText = object.known_for_department;            ;
             mediaDiv.append(departmentPtag);
 
-            //Går igenom arrayen och lägger till dom olika engenskaperna i en lista.
+            //Går igenom known_for arrayen och lägger till namn på filmen/serien samt mediatyp i en lista.
             const knowForUl = document.createElement("ul")
             for(let i=0; i < object.known_for.length; i++){
                 const titleLi = document.createElement("li");
@@ -34,7 +37,7 @@ function showData(data,searchType){
             mediaDiv.append(knowForUl);
 
         }else if(searchType == "Movies"){
-            //Lägger till värden på dom olika elementen och förbererder eventuellt felmedelande.
+            //Lägger till release date på en ptag och ifall det skulle saknas i objektet så visas det ett felmedelande.
             const releaseDatePtag = document.createElement("p");
             releaseDatePtag.innerText="Released: "+(object.release_date ? object.release_date:"no release date in DB!");
             mediaDiv.append(releaseDatePtag);
@@ -53,4 +56,10 @@ function showData(data,searchType){
     }
 }
 
-export{showData}
+function noResult(){
+    const errorH2 = document.createElement("h2");
+    errorH2.innerText="No results!";
+    return errorH2;
+}
+
+export{showData,noResult};

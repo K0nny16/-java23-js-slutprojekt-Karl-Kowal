@@ -1,5 +1,3 @@
-import { showData } from "./displayData.js";
-
 async function fetchAPIData(searchType, search) {
     //Skickar med ett objekt med request info.
     let url;
@@ -18,13 +16,6 @@ async function fetchAPIData(searchType, search) {
     try{
         const respone = await fetch(url,options);
         const data = await respone.json();
-        //Kontrollerar så att användarens sökning gav ett resultat.
-        if(data.results == 0){
-            const errorH2 = document.createElement("h2");
-            errorH2.innerText="No results!";
-            contentContainer.append(errorH2);
-            return [];
-        } 
         return data.results;
     }
     catch(error){
@@ -33,24 +24,4 @@ async function fetchAPIData(searchType, search) {
         contentContainer.append(errorElement);
     }
 }
-
-const contentContainer = document.querySelector("#content");
-//Funktionen kollar vilken knapp användaren har tryckt på och även vad den har sökt på och spara det i searchType och search.
-async function handelSubmits(event){
-    event.preventDefault();
-    contentContainer.innerHTML="";
-    let searchType;
-    let search;
-
-    if(event.type == "click") searchType = event.currentTarget.id;
-
-    else if(event.type == "submit"){
-        const selectElement = document.querySelector("select");
-        searchType = selectElement.value;
-        search = document.querySelector("#textInput").value.trim();
-    } 
-    const data = await fetchAPIData(searchType, search);
-    showData(data, searchType);
-}
-
-export{handelSubmits};
+export{fetchAPIData};
