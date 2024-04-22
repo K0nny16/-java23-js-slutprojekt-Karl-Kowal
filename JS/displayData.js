@@ -1,6 +1,7 @@
 function parseData(data,searchType){
+    //Gör om datan till mer lätt hanterliga object och arrayer.
     let parsedObjects;
-    if(searchType == "people"){
+    if(searchType == "People"){
         parsedObjects = data.map(person => ({
         profile_picture: person.profile_path,
         name: person.name,
@@ -11,7 +12,7 @@ function parseData(data,searchType){
         }),
         mediaType: person.known_for.map(mediaType => mediaType.media_type)
     }));
-    }else if(searchType == "movieSearch"){
+    }else if(searchType == "Movies"){
         parsedObjects = data.map(search =>({
             poster_path: search.poster_path,
             title: search.original_title,
@@ -28,7 +29,8 @@ function parseData(data,searchType){
     console.log(parsedObjects);
     showData(parsedObjects,searchType);
 }
-
+//Bygger dom olika elementen men först kollar så det inte är ett tomt resultat.
+//Om tomt skickar vi ett felmedelande.
 function showData(parsedData,searchType){
     const contentContainer = document.querySelector("#content");
     if(parsedData.length == 0){
@@ -49,7 +51,7 @@ function showData(parsedData,searchType){
         headerText.innerText = (object.name ? object.name:object.title);
         div.append(headerText);
         
-        if(searchType =="people"){
+        if(searchType =="People"){
             const department = document.createElement("p");
             department.innerText = object.know_for_department;
             div.append(department);
@@ -62,18 +64,18 @@ function showData(parsedData,searchType){
             }
             div.append(knowFor);
 
-        }else if(searchType == "movieSearch"){
+        }else if(searchType == "Movies"){
             const releaseDate = document.createElement("p");
-            releaseDate.innerText=`Released: ${object.release_date}`;
+            releaseDate.innerText="Released: "+(object.release_date ? object.release_date:"no release date in DB!");
             div.append(releaseDate);
 
             const description = document.createElement("p");
-            description.innerText=object.overview;
+            description.innerText=(object.overview ? object.overview : "No media description in DB!");
             div.append(description);
 
         }else if(searchType == "top10" || searchType == "popular"){
             const releaseDate = document.createElement("p");
-            releaseDate.innerText=`Released: ${object.release_date}`;
+            releaseDate.innerText="Released: "+(object.release_date ? object.release_date :"no release date in DB!");
             div.append(releaseDate);
         }
         contentContainer.append(div);

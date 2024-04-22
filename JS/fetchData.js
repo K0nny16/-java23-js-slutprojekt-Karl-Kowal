@@ -13,8 +13,8 @@ async function fetchAPIData(searchType, search) {
     };
     
     //Anpassar URLn beroende på vad användaren har sökt efter.
-    if(searchType == "people")url = "https://api.themoviedb.org/3/search/person?query="+search+"%20&include_adult=false&language=en-US&page=1";
-    else if(searchType == "movieSearch") url = "https://api.themoviedb.org/3/search/movie?query="+search+"&include_adult=false&language=en-US&page=1";
+    if(searchType == "People")url = "https://api.themoviedb.org/3/search/person?query="+search+"%20&include_adult=false&language=en-US&page=1";
+    else if(searchType == "Movies") url = "https://api.themoviedb.org/3/search/movie?query="+search+"&include_adult=false&language=en-US&page=1";
     else if(searchType == "top10")url ="https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1";
     else if(searchType == "popular")url = "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1";
     try{
@@ -31,7 +31,7 @@ async function fetchAPIData(searchType, search) {
 
 
 const contentContainer = document.querySelector("#content");
-//Metod som behandlar eventet beroende på ifall det är någon av knapparna som trycks eller ifall det är formet som gör en submit.
+//Funktion som behandlar eventet beroende på ifall det är någon av knapparna som trycks eller ifall det är formet som gör en submit.
 async function handelSubmits(event){
     event.preventDefault();
     contentContainer.innerHTML="";
@@ -42,9 +42,7 @@ async function handelSubmits(event){
 
     else if(event.type == "submit"){
         const selectElement = document.querySelector("select");
-        const selectedValue = selectElement.value;
-        if(selectedValue == "People") searchType = "people";
-        else if(selectedValue == "Movies") searchType = "movieSearch";
+        searchType = selectElement.value;
         search = document.querySelector("#textInput").value.trim();
     } 
     const data = await fetchAPIData(searchType,search);
