@@ -1,8 +1,6 @@
 //Bygger dom olika elementen men först kollar så det inte är ett tomt resultat.
 //Om tomt skickar vi ett felmedelande.
-
 //Funktionen visar en bild en title och annan information på hemsidan som är relevant för median eller personen.
-
 function showData(data,searchType){
     const contentContainer = document.querySelector("#content");
     //Itererar igenom arrayen av objekt.
@@ -18,7 +16,7 @@ function showData(data,searchType){
 
         //Kollar ifall det är en film eller en serie som är i objektet.
         const headerTextH2 = document.createElement("h2");
-        headerTextH2.innerText = (object.name ? object.name:object.title);
+        headerTextH2.innerText = (object.name ? object.name:object.original_title);
         mediaDiv.append(headerTextH2);
         
         if(searchType =="People"){
