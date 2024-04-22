@@ -41,8 +41,7 @@ function showData(parsedData,searchType){
         div.className="contentDiv";
 
         const img = document.createElement("img");
-        const url ="https://image.tmdb.org/t/p/w500"+(object.profile_picture ? object.profile_picture : object.poster_path); 
-        img.src = url;
+        img.src = "https://image.tmdb.org/t/p/w500"+(object.profile_picture ? object.profile_picture : object.poster_path);
         img.alt = "Bilden hittades inte!";
         div.append(img);
 
