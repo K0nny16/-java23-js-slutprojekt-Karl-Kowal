@@ -19,9 +19,10 @@ async function fetchAPIData(searchType, search) {
         return data.results;
     }
     catch(error){
+        const contentContainer = document.querySelector("#content");
         const errorElement = document.createElement("h2");
-        errorElement.innerText=`Error! \n ${error}`
+        errorElement.innerText=`Error något gick fel! \n ${error}`;
         contentContainer.append(errorElement);
-    }
+    } 
 }
 export{fetchAPIData};
