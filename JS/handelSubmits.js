@@ -16,7 +16,7 @@ async function handelSubmits(event) {
     search = document.querySelector("#textInput").value.trim();
   }
   const data = await fetchAPIData(searchType, search);
-  if(event.type == "click") data.splice(-10);
+  if(event.type == "click") data.splice(10);
   if(data == 0) contentContainer.append(noResult());
   else showData(data, searchType);
 }
