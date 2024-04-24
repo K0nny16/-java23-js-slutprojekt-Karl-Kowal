@@ -6,7 +6,7 @@ function showData(data,searchType){
     //Itererar igenom arrayen av objekt.
     for(const object of data){
         const mediaDiv = document.createElement("div");
-        mediaDiv.className="contentDiv";
+        mediaDiv.className="content-div";
 
         //Sätter sourcen till bilden och eventuellt felmedelande.
         const img = document.createElement("img");
